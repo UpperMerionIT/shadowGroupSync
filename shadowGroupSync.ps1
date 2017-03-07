@@ -76,6 +76,7 @@ Function Get-SourceObjects($searchbase, $domain, $type, $scope)
       {
         "computer" {Get-ADComputer -Filter {Enabled -eq $true} -SearchBase $searchbase -SearchScope $scope -server $domain -ErrorAction Stop}
         "computer-name-valid" {Get-ADComputer -Filter {Name -match "^[a-z]{5}-[0-9]{5}$"} -SearchBase $searchbase -SearchScope $scope -server $domain -ErrorAction Stop}
+        "hsStudentComputer" {get-adcomputer -filter * -SearchBase $searchbase -SearchScope $scope -server $domain | where {$_.Name -match "^[0-9][0-9]-.*"}}
         "user-mail-enabled" {Get-ADUser -Filter {Mail -like '*' -and Enabled -eq $true} -SearchBase $searchbase -SearchScope $scope -server $domain -ErrorAction Stop}
         {($_ -eq "user") -or ($_ -eq "user-enabled")} {Get-ADUser -Filter {Enabled -eq $true} -SearchBase $searchbase -SearchScope $scope -server $domain -ErrorAction Stop}
         "user-disabled" {Get-ADUser -Filter {Enabled -eq $false} -SearchBase $searchbase -SearchScope $scope -server $domain -ErrorAction Stop}
